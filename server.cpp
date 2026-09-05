@@ -81,7 +81,6 @@ int main() {
     std::cout << "Server listening on port " << port << std::endl;
 
     while (true) {
-        std::cout << "Request: " << method << " " << url << " from " << uid << std::endl;
         int new_socket = accept(server_fd, nullptr, nullptr);
         if (new_socket < 0) continue;
 
@@ -97,6 +96,10 @@ int main() {
         std::string uname = extract_header(req, "X-User-Name");
         std::string room = extract_header(req, "X-Room-Name");
         std::string target_id = extract_header(req, "X-Target-ID");
+
+        if (!method.empty() && !url.empty()) {
+            std::cout << "Incoming Request: " << method << " " << url << " (User: " << uid << ")" << std::endl;
+        }
 
         if (!uid.empty() && !uname.empty()) save_username(uid, uname);
 
